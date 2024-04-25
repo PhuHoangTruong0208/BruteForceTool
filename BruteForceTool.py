@@ -11,7 +11,7 @@ class BruteForceVPS:
                 for user in ["John\n", "Administrator\n", "Aaron"]:
                     file.write(user)
         if os.path.exists(password) == False:
-            with open(file=username, mode="a", encoding="utf-8") as file:
+            with open(file=password, mode="a", encoding="utf-8") as file:
                 for user in ["12345\n", "Aa123456\n", "Aa123456@"]:
                     file.write(user)
         self.username = username
