@@ -15,6 +15,9 @@ class BruteForceVPS:
             with open(file=password, mode="a", encoding="utf-8") as file:
                 for user in ["12345\n", "Aa123456\n", "Aa123456@"]:
                     file.write(user)
+        if os.path.exists(targets_ip_path) == False:
+            with open(file=targets_ip_path, mode="a"):
+                pass
         self.username = username
         self.password = password
         self.hydra_output = hydra_output
