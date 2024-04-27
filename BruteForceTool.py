@@ -85,7 +85,7 @@ class BruteForceVPS:
     def clean_target(self):
         with open(self.targets_ip_path, "r", encoding="utf-8") as filer:
             check = filer.read()
-        if check is not "":
+        if check != "":
             with open(self.targets_ip_path, "w", encoding="utf-8") as filew:
                 filew.write("")
 
