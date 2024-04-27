@@ -79,10 +79,16 @@ class BruteForceVPS:
             for tar_op in clear_except:
                 file.write(tar_op)
 
+    def clean_target(self):
+        with open(self.targets_ip_path, "r", encoding="utf-8") as filer:
+            check = filer.read()
+        if check is not "":
+            with open(self.targets_ip_path, "w", encoding="utf-8") as filew:
+                filew.write("")
+
     def run(self, num_thread):
         while True:
-            if os.path.exists(self.targets_ip_path) == True:
-                os.remove(self.targets_ip_path)
+            self.clean_target()
             print("bắt đầu tìm kiếm mục tiêu")
             self.multi_thread_scan(thread_num=num_thread)
             print("bắt đầu tấn công")
